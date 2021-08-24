@@ -95,7 +95,7 @@ else
 fi
 
 log "Installing some other packages."
-sudo pacman -S --noconfirm xauth emacs
+sudo pacman -S --noconfirm xauth emacs neovim
 
 log "Sanity check:"
 log "  yadm:  $(which yadm)"
