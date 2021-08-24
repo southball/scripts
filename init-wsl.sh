@@ -19,6 +19,13 @@ fi
 
 cd $HOME
 
+if ! which starship; then
+	log "Installing starship."
+	sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- --yes
+else
+	log "Starship is installed. Skipping."
+fi
+
 if [ ! -f "/usr/local/bin/pacapt" ]; then
 	log "Installing pacapt."
 	sudo wget -O /usr/local/bin/pacapt https://github.com/icy/pacapt/raw/ng/pacapt
@@ -66,18 +73,29 @@ else
 	log "NodeJS is already installed. Skipping."
 fi
 
-#log "Installing OCaml and OPAM."
-#sudo pacman -S --noconfirm opam
+if ! which ocaml; then
+	log "Installing OCaml and OPAM."
+	sudo pacman -S --noconfirm opam
+	opam init --shell-setup --disable-shell-hook
+	eval $(opam env)
+	opam switch create 4.12.0
+	eval $(opam env)
+else
+	log "OCaml is already installed. Skipping."
+fi
 
-#if ! which ; then
-#	log "Installing Coq."
-#	opam init --disable-sandboxing --disable-shell-hook
-#else
-#	log "Coq is already installed. Skipping."
-#fi
+if ! which coqc; then
+	log "Installing Coq."
+	opam install opam-depext
+	eval $(opam env)
+	opam-depext coq --yes
+	opam pin add coq 8.13.1 --yes
+else
+	log "Coq is already installed. Skipping."
+fi
 
 log "Installing some other packages."
-sudo pacman -S --noconfirm xauth
+sudo pacman -S --noconfirm xauth emacs
 
 log "Sanity check:"
 log "  yadm:  $(which yadm)"
@@ -85,3 +103,4 @@ log "  rustc: $(which rustc)"
 log "  node:  $(which node)"
 log "  ocaml: $(which ocaml)"
 log "  opam:  $(which opam)"
+log "  coqc:  $(which coqc)"
