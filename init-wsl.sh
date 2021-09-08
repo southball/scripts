@@ -39,7 +39,7 @@ log "Updating system packages."
 sudo pacman -Syu --noconfirm
 
 log "Installing required packages."
-sudo pacman -S --noconfirm build-essential yadm 
+sudo pacman -S --noconfirm build-essential yadm unzip
 
 log "Configuring Git."
 git config --global user.email "jamie.choi.mail.2002@gmail.com"
@@ -101,14 +101,26 @@ else
 	log "Java is already installed. Skipping."
 fi
 
+if ! which gradle; then
+	log "installing gradle."
+	mkdir -p temp.gradle
+	pushd temp.gradle
+	wget 'https://services.gradle.org/distributions/gradle-7.2-all.zip'
+	sudo unzip -d /opt/gradle ./gradle-7.2-all.zip
+	popd
+else
+	log "Gradle is already installed. Skipping."
+fi
+
 log "Installing some other packages."
 sudo pacman -S --noconfirm xauth emacs neovim
 
 log "Sanity check:"
-log "  yadm:  $(which yadm)"
-log "  rustc: $(which rustc)"
-log "  node:  $(which node)"
-log "  ocaml: $(which ocaml)"
-log "  opam:  $(which opam)"
-log "  coqc:  $(which coqc)"
-log "  javac: $(which javac)"
+log "  yadm:   $(which yadm)"
+log "  rustc:  $(which rustc)"
+log "  node:   $(which node)"
+log "  ocaml:  $(which ocaml)"
+log "  opam:   $(which opam)"
+log "  coqc:   $(which coqc)"
+log "  javac:  $(which javac)"
+log "  gradle: $(which gradle)"
