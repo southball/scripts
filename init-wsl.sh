@@ -94,6 +94,13 @@ else
 	log "Coq is already installed. Skipping."
 fi
 
+if ! which javac; then
+	log "Installing Java (OpenJDK 16)."
+	sudo pacman -S --noconfirm openjdk-16-jdk-headless
+else
+	log "Java is already installed. Skipping."
+fi
+
 log "Installing some other packages."
 sudo pacman -S --noconfirm xauth emacs neovim
 
@@ -104,3 +111,4 @@ log "  node:  $(which node)"
 log "  ocaml: $(which ocaml)"
 log "  opam:  $(which opam)"
 log "  coqc:  $(which coqc)"
+log "  javac: $(which javac)"
