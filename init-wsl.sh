@@ -69,6 +69,7 @@ if ! which node; then
 	log "Installing NodeJS."
 	curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 	sudo pacman -S --noconfirm nodejs
+	sudo npm install -g yarn
 else
 	log "NodeJS is already installed. Skipping."
 fi
